@@ -21,9 +21,12 @@ export class AppClass extends Component {
       activeRow: null,
       leftMoveCount: 0,
       rightMoveCount: 0,
+      tetrisBlock: null,
     }
   }
   componentDidMount() {
+    let shape = getRandomShape()
+    this.setState({ tetrisBlock: shape })
     let intervalId = setInterval(this.getElement, 1000)
     this.setState({ intervalId: intervalId })
   }
@@ -64,30 +67,50 @@ export class AppClass extends Component {
     }
   }
 
+  handleRotateElement = () => {
+    const { tetrisBlock } = this.state
+    if (tetrisBlock === HORIZONTAL_LINE) {
+      this.setState({ tetrisBlock: VERTICAL_LINE })
+    } else if (tetrisBlock === VERTICAL_LINE) {
+      this.setState({ tetrisBlock: HORIZONTAL_LINE })
+    }
+  }
+
   getElement = () => {
     if (this.state.rowCount <= ROWS.length - 1) {
       const element = document.getElementById(`row-${this.state.rowCount}`)
       const prevElement = document.getElementById(`row-${this.state.rowCount - 1}`) || null
-      const { leftMoveCount, rightMoveCount } = this.state
+      const { leftMoveCount, rightMoveCount, tetrisBlock } = this.state
 
       if (prevElement && leftMoveCount <= THRESHOLD && rightMoveCount <= THRESHOLD) {
         this.clearPreviousMove(prevElement)
       } else {
         this.clearPreviousMove(prevElement)
       }
-      if (element && leftMoveCount <= THRESHOLD && rightMoveCount <= THRESHOLD) {
-        element.children[7 - leftMoveCount + rightMoveCount].style.backgroundColor = "blue"
-        element.children[8 - leftMoveCount + rightMoveCount].style.backgroundColor = "blue"
-        element.children[9 - leftMoveCount + rightMoveCount].style.backgroundColor = "blue"
-        element.children[10 - leftMoveCount + rightMoveCount].style.backgroundColor = "blue"
-        element.children[11 - leftMoveCount + rightMoveCount].style.backgroundColor = "blue"
-      } else {
-        element.children[0 + rightMoveCount].style.backgroundColor = "blue"
-        element.children[1 + rightMoveCount].style.backgroundColor = "blue"
-        element.children[2 + rightMoveCount].style.backgroundColor = "blue"
-        element.children[3 + rightMoveCount].style.backgroundColor = "blue"
-        element.children[4 + rightMoveCount].style.backgroundColor = "blue"
+      if (tetrisBlock === HORIZONTAL_LINE) {
+        if (element && leftMoveCount <= THRESHOLD && rightMoveCount <= THRESHOLD) {
+          element.children[7 - leftMoveCount + rightMoveCount].style.backgroundColor = "blue"
+          element.children[8 - leftMoveCount + rightMoveCount].style.backgroundColor = "blue"
+          element.children[9 - leftMoveCount + rightMoveCount].style.backgroundColor = "blue"
+          element.children[10 - leftMoveCount + rightMoveCount].style.backgroundColor = "blue"
+          element.children[11 - leftMoveCount + rightMoveCount].style.backgroundColor = "blue"
+        } else {
+          if (rightMoveCount > THRESHOLD) {
+            element.children[0 + rightMoveCount - leftMoveCount].style.backgroundColor = "blue"
+            element.children[1 + rightMoveCount - leftMoveCount].style.backgroundColor = "blue"
+            element.children[2 + rightMoveCount - leftMoveCount].style.backgroundColor = "blue"
+            element.children[3 + rightMoveCount - leftMoveCount].style.backgroundColor = "blue"
+            element.children[4 + rightMoveCount - leftMoveCount].style.backgroundColor = "blue"
+          } else {
+            element.children[0 + rightMoveCount].style.backgroundColor = "blue"
+            element.children[1 + rightMoveCount].style.backgroundColor = "blue"
+            element.children[2 + rightMoveCount].style.backgroundColor = "blue"
+            element.children[3 + rightMoveCount].style.backgroundColor = "blue"
+            element.children[4 + rightMoveCount].style.backgroundColor = "blue"
+          }
+        }
       }
+
       this.setState({ activeRow: element }, () => this.setState({ rowCount: this.state.rowCount + 1 }))
     }
   }
@@ -96,7 +119,7 @@ export class AppClass extends Component {
       <div className='App'>
         <div className='container'>
           <div className='game-layout'>
-            Game Layout
+            TETRIS GAME - SHAPE - {this.state.tetrisBlock}
             <div className='game-container'>
               {ROWS.map((item, index) => (
                 <Row key={`row-${index}`} cols={COLS} id={`row-${index}`} />
@@ -115,7 +138,7 @@ export class AppClass extends Component {
                 </button>
               </div>
               <div className='action-btn-sec-div'>
-                <button onClick={this.handleLeftMove} className='action-btn-rotate'>
+                <button onClick={this.handleRotateElement} className='action-btn-rotate'>
                   Rotate
                 </button>
               </div>
