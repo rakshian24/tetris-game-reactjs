@@ -1,38 +1,90 @@
 .App {
-  text-align: center;
+  margin: 0 auto;
+  width: 80%;
+  height: 100vh;
+  background-color: aquamarine;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.container {
+  background-color: red;
+  padding: 1rem 1.5rem;
+  display: flex;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.container .game-layout {
+  border: 1px solid black;
+  flex: 0.75;
+  padding: 0.5rem;
+  height: calc(100vh - 2rem);
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.game-layout .game-container {
+  border: 1px solid black;
+  height: calc(100vh - 3.9rem);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  flex-wrap: wrap;
+}
+
+.game-container .flex-container {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-flow: row;
+  justify-content: space-around;
+  line-height: 30px;
+  flex-wrap: wrap;
+}
+.flex-item {
+  background: tomato;
+  /* margin: 5px; */
   color: white;
+  font-weight: bold;
+  text-align: center;
+  flex: 1 0 auto;
+  height: auto;
+  border: 1px solid black;
+  width: 2rem;
+  height: 2rem;
+}
+.flex-item:before {
+  content: '';
+  float: left;
+  /* padding-top:100%; */
+  padding-top: 5%;
 }
 
-.App-link {
-  color: #61dafb;
+.score-layout {
+  margin-left: 1rem;
+  border: 1px solid black;
+  flex: 0.25;
+  padding: 0.5rem;
+}
+.score-layout .score-container {
+  border: 1px solid black;
+  display: flex;
+  justify-content: space-between;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.action-btn-first-div {
+  flex: 0.75;
+  background-color: blueviolet;
+}
+
+.action-btn-sec-div button {
+  background-color: yellow;
+  flex: 0.25;
+  border-radius: 20%;
+  padding: 15px 15px;
+  height: 100%;
+}
+
+.action-btn {
+  padding: 15px 15px;
+  width: 50%;
 }
